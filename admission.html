@@ -1,0 +1,616 @@
+$code = @"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission Process | College Admissions</title>
+    <style>
+        :root {
+            --primary: #2b6cb0;
+            --secondary: #edf2f7;
+            --accent: #f6ad55;
+            --text: #1a202c;
+            --bg: #ffffff;
+            --muted: #718096;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #f7fafc 0%, #ffffff 100%);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 28px 20px;
+        }
+
+        .container {
+            width: min(1120px, 96%);
+            margin: 0 auto;
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.55rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            padding: 54px 0;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 2.8vw, 3.6rem);
+            line-height: 1.05;
+            margin-bottom: 24px;
+        }
+
+        .hero p {
+            max-width: 620px;
+            color: var(--secondary);
+            margin-bottom: 24px;
+        }
+
+        .hero button {
+            border: none;
+            background: #f6ad55;
+            color: var(--text);
+            padding: 14px 28px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .hero button:hover {
+            transform: translateY(-2px);
+            background: #ed8936;
+        }
+
+        .hero-illustration {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.75));
+            border-radius: 24px;
+            box-shadow: 0 30px 80px rgba(45, 55, 72, 0.08);
+            padding: 32px;
+        }
+
+        .hero-illustration img {
+            width: 100%;
+            display: block;
+            border-radius: 20px;
+        }
+
+        main {
+            padding: 32px 0 64px;
+        }
+
+        section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title span {
+            width: 40px;
+            height: 4px;
+            background: var(--accent);
+            display: inline-block;
+            border-radius: 999px;
+        }
+
+        .section-title h2 {
+            font-size: 1.9rem;
+        }
+
+        .intro-text {
+            color: #4a5568;
+            max-width: 760px;
+            margin-bottom: 28px;
+        }
+
+        .steps-grid,
+        .cards-grid,
+        .faq-grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .steps-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .step-card,
+        .info-card,
+        .faq-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 18px 50px rgba(45,55,72,0.08);
+        }
+
+        .step-card h3,
+        .info-card h3,
+        .faq-card h3 {
+            margin-bottom: 14px;
+            font-size: 1.2rem;
+        }
+
+        .step-card p,
+        .info-card p,
+        .faq-card p {
+            color: #4a5568;
+        }
+
+        .step-number {
+            background: var(--primary);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .cards-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .info-card strong {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .faq-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .faq-card dl {
+            display: grid;
+            gap: 12px;
+        }
+
+        .faq-card dt {
+            font-weight: 700;
+        }
+
+        .faq-card dd {
+            margin-left: 0;
+            color: var(--muted);
+        }
+
+        .apply-section {
+            background: #edf2f7;
+            border-radius: 28px;
+            padding: 32px;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 1.5fr 1fr;
+        }
+
+        .form-grid input,
+        .form-grid select,
+        .form-grid textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #cbd5e0;
+            border-radius: 14px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .form-grid textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .form-actions button {
+            border: none;
+            background: var(--primary);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .form-actions a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .stats {
+            display: grid;
+            gap: 18px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 22px 18px;
+            text-align: center;
+            box-shadow: 0 16px 40px rgba(45,55,72,0.06);
+        }
+
+        .stat-card strong {
+            display: block;
+            font-size: 1.75rem;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        footer {
+            padding: 28px 0 24px;
+            background: #1a202c;
+            color: #cbd5e0;
+        }
+
+        footer p,
+        footer a {
+            color: #cbd5e0;
+            text-decoration: none;
+        }
+
+        .footer-grid {
+            display: grid;
+            gap: 24px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .footer-grid h3 {
+            color: white;
+            margin-bottom: 14px;
+        }
+
+        .footer-grid li {
+            list-style: none;
+            margin-bottom: 10px;
+        }
+
+        .footer-grid a:hover {
+            color: #f6ad55;
+        }
+
+        @media (max-width: 900px) {
+            .hero,
+            .form-grid,
+            .cards-grid,
+            .steps-grid,
+            .footer-grid,
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero {
+                padding-top: 30px;
+            }
+
+            header {
+                text-align: center;
+            }
+
+            .top-bar {
+                flex-direction: column;
+            }
+
+            .hero-illustration {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="top-bar">
+                <div class="logo">AdmitSmart</div>
+                <nav>
+                    <ul>
+                        <li><a href="#process">Process</a></li>
+                        <li><a href="#courses">Programs</a></li>
+                        <li><a href="#apply">Apply</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="hero">
+                <div>
+                    <p>Start your journey with a streamlined admission experience.</p>
+                    <h1>Admission Process Made Simple for Every Student</h1>
+                    <p class="intro-text">
+                        Discover the full application and enrollment path with clear guidance, documentation checklists,
+                        program selection, and support from start to start.
+                    </p>
+                    <button onclick="document.getElementById('apply').scrollIntoView({ behavior: 'smooth'});">
+                        Begin Application
+                    </button>
+                </div>
+                <div class="hero-illustration">
+                    <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=900&q=80"
+                        alt="Students reviewing application materials" />
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="process">
+            <div class="section-title">
+                <span></span>
+                <h2>Admission Process Overview</h2>
+            </div>
+            <p class="intro-text">
+                Our admission process is designed to help first-time applicants and returning students navigate every
+                requirement with confidence. Follow the steps below and reach out if you need assistance.
+            </p>
+            <div class="steps-grid">
+                <article class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Review Eligibility</h3>
+                    <p>Check program entry requirements, academic prerequisites, and age criteria so you can apply to the right course.</p>
+                </article>
+                <article class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Choose a Program</h3>
+                    <p>Browse all available disciplines and select the program that best matches your academic goals and career plans.</p>
+                </article>
+                <article class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Prepare Documents</h3>
+                    <p>Gather transcripts, identity proof, recommendation letters, and any additional forms required for your application.</p>
+                </article>
+                <article class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Submit Application</h3>
+                    <p>Complete the online application form, upload your documents, and submit your application before the deadline.</p>
+                </article>
+                <article class="step-card">
+                    <div class="step-number">5</div>
+                    <h3>Pay Fees</h3>
+                    <p>Secure your application by paying the processing fee with safe online payment methods. Track your receipt instantly.</p>
+                </article>
+                <article class="step-card">
+                    <div class="step-number">6</div>
+                    <h3>Receive Offer</h3>
+                    <p>Get admission decisions by email and portal notification. Verify your acceptance details and confirm your seat.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="courses">
+            <div class="section-title">
+                <span></span>
+                <h2>Popular Programs</h2>
+            </div>
+            <p class="intro-text">
+                Explore a selection of programs that are currently accepting applications. Each program includes a quick overview
+                of the main focus area and the core admission criteria.
+            </p>
+            <div class="cards-grid">
+                <article class="info-card">
+                    <h3>Bachelor of Business Administration</h3>
+                    <strong>Duration: 4 years</strong>
+                    <p>Build leadership, finance, and marketing skills in a dynamic business curriculum designed for emerging professionals.</p>
+                </article>
+                <article class="info-card">
+                    <h3>Computer Science &amp; Engineering</h3>
+                    <strong>Duration: 4 years</strong>
+                    <p>Learn software development, data science, and systems design to prepare for technology careers and innovation roles.</p>
+                </article>
+                <article class="info-card">
+                    <h3>Psychology &amp; Human Behavior</h3>
+                    <strong>Duration: 3 years</strong>
+                    <p>Study cognitive science, counseling techniques, and research methods to pursue careers in psychology and social services.</p>
+                </article>
+                <article class="info-card">
+                    <h3>Graphic Design &amp; Media</h3>
+                    <strong>Duration: 3 years</strong>
+                    <p>Develop creative storytelling, brand design, and multimedia production skills for careers in visual communication.</p>
+                </article>
+                <article class="info-card">
+                    <h3>Healthcare Management</h3>
+                    <strong>Duration: 2 years</strong>
+                    <p>Gain expertise in hospital administration, public health policy, and patient care coordination for healthcare leadership roles.</p>
+                </article>
+                <article class="info-card">
+                    <h3>Environmental Science</h3>
+                    <strong>Duration: 3 years</strong>
+                    <p>Study sustainability, conservation, and environmental policy to support eco-friendly careers and research initiatives.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="apply-section" id="apply">
+            <div class="section-title">
+                <span></span>
+                <h2>Apply for Admission</h2>
+            </div>
+            <p class="intro-text">
+                Complete the online application form below. Provide accurate contact details, choose your preferred program,
+                and attach the required documents for a smooth review process.
+            </p>
+            <div class="form-grid">
+                <div>
+                    <label for="full-name">Full Name</label>
+                    <input type="text" id="full-name" placeholder="Enter your full name" />
+
+                    <label for="email" style="margin-top: 18px; display: block;">Email Address</label>
+                    <input type="email" id="email" placeholder="name@example.com" />
+
+                    <label for="phone" style="margin-top: 18px; display: block;">Phone Number</label>
+                    <input type="tel" id="phone" placeholder="(123) 456-7890" />
+
+                    <label for="program" style="margin-top: 18px; display: block;">Preferred Program</label>
+                    <select id="program">
+                        <option value="bba">Bachelor of Business Administration</option>
+                        <option value="cse">Computer Science &amp; Engineering</option>
+                        <option value="psych">Psychology &amp; Human Behavior</option>
+                        <option value="design">Graphic Design &amp; Media</option>
+                        <option value="health">Healthcare Management</option>
+                        <option value="env">Environmental Science</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="qualification">Highest Qualification</label>
+                    <input type="text" id="qualification" placeholder="High School Diploma or Degree" />
+
+                    <label for="year" style="margin-top: 18px; display: block;">Passing Year</label>
+                    <input type="text" id="year" placeholder="2025" />
+
+                    <label for="message" style="margin-top: 18px; display: block;">Personal Statement</label>
+                    <textarea id="message" placeholder="Tell us why you want to join this program"></textarea>
+
+                    <div class="form-actions" style="margin-top: 14px;">
+                        <button type="button">Submit Application</button>
+                        <a href="#faq">Need help?</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-title">
+                <span></span>
+                <h2>Why Apply With Us?</h2>
+            </div>
+            <div class="stats">
+                <article class="stat-card">
+                    <strong>24/7</strong>
+                    <p>Admissions support available at every stage, with step-by-step guidance and live chat access.</p>
+                </article>
+                <article class="stat-card">
+                    <strong>95%</strong>
+                    <p>Of applicants receive a decision within two weeks after submission.</p>
+                </article>
+                <article class="stat-card">
+                    <strong>80+</strong>
+                    <p>Programs that cover business, technology, health, arts, and science disciplines.</p>
+                </article>
+                <article class="stat-card">
+                    <strong>400+</strong>
+                    <p>Experienced faculty and advisors helping you choose the right academic pathway.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="faq">
+            <div class="section-title">
+                <span></span>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-grid">
+                <article class="faq-card">
+                    <dl>
+                        <dt>How do I know if I am eligible?</dt>
+                        <dd>Review the eligibility information for your selected program and match your prior academic record with the minimum requirements.</dd>
+                        <dt>What documents are required?</dt>
+                        <dd>Generally you need an academic transcript, identity proof, a passport photo, and any supporting letters or certificates.</dd>
+                        <dt>When is the application deadline?</dt>
+                        <dd>Deadlines vary by program and intake. Check the admissions calendar for the current semester and apply early.</dd>
+                    </dl>
+                </article>
+                <article class="faq-card">
+                    <dl>
+                        <dt>Can I change my program after submitting?</dt>
+                        <dd>Yes, you can request a program change before the review process completes. Contact admissions support for help.</dd>
+                        <dt>Do you offer financial aid?</dt>
+                        <dd>Financial assistance and scholarships are available for eligible applicants. Submit your financial aid application alongside your admission form.</dd>
+                        <dt>How will I receive my admission letter?</dt>
+                        <dd>Admission decisions and offers are sent by email and through the student portal once the review is complete.</dd>
+                    </dl>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3>About AdmitSmart</h3>
+                    <p>We guide students through a friendly admission journey with clear instructions, personalized support, and fast decisions.</p>
+                </div>
+                <div>
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#process">Admission Process</a></li>
+                        <li><a href="#courses">Programs</a></li>
+                        <li><a href="#apply">Apply Now</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Contact</h3>
+                    <p>Email: admissions@admitsmart.edu</p>
+                    <p>Phone: +1 (800) 123-4567</p>
+                </div>
+            </div>
+            <p style="margin-top: 24px; text-align: center;">&copy; 2026 AdmitSmart. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
+"@
+Set-Content -Path 'c:\HTML\admission.html' -Value $code -Encoding utf8
+Get-Content -Path 'c:\HTML\admission.html' | Measure-Object -Line | Select-Object Lines
